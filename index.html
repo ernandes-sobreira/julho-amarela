@@ -604,105 +604,70 @@ const perguntas = [
   {
     texto: "Qual hepatite possui vacina disponível no SUS?",
     opcoes: ["Hepatite C", "Hepatite B", "Hepatite D", "Todas as anteriores"],
-    correta: 1,
+    correta_texto: "Hepatite B",
     feedback_certo: "Exatamente! A vacina contra Hepatite B está disponível gratuitamente no SUS para todas as idades.",
     feedback_errado: "A vacina disponível no SUS é contra a Hepatite B. Ela faz parte do calendário nacional de vacinação!"
   },
   {
     texto: "Qual sistema é utilizado para notificação das Hepatites Virais?",
     opcoes: ["SISAB", "e-SUS", "SINAN", "GAL"],
-    correta: 2,
+    correta_texto: "SINAN",
     feedback_certo: "Certo! O SINAN (Sistema de Informação de Agravos de Notificação) é onde as hepatites virais são registradas.",
     feedback_errado: "O sistema correto é o SINAN — Sistema de Informação de Agravos de Notificação."
   },
   {
     texto: "Qual profissional é responsável pela notificação compulsória?",
-    opcoes: [
-      "Apenas médicos",
-      "Apenas enfermeiros",
-      "Apenas vigilância epidemiológica",
-      "Qualquer profissional de saúde que identificar o caso"
-    ],
-    correta: 3,
+    opcoes: ["Apenas médicos", "Apenas enfermeiros", "Apenas a vigilância epidemiológica", "Qualquer profissional de saúde que identificar o caso"],
+    correta_texto: "Qualquer profissional de saúde que identificar o caso",
     feedback_certo: "Perfeito! Qualquer profissional de saúde que identificar ou suspeitar de um caso é obrigado a notificar.",
-    feedback_errado: "Atenção: a notificação compulsória é responsabilidade de QUALQUER profissional de saúde que identificar o caso!"
+    feedback_errado: "A notificação compulsória é responsabilidade de QUALQUER profissional de saúde que identificar o caso!"
   },
   {
     texto: "A imunoglobulina para Hepatite B é recomendada principalmente para:",
-    opcoes: [
-      "Tratamento da Hepatite B crônica",
-      "Profilaxia pós-exposição ao vírus da Hepatite B",
-      "Prevenção da Hepatite C",
-      "Tratamento da Hepatite A"
-    ],
-    correta: 1,
+    opcoes: ["Tratamento da Hepatite B crônica", "Profilaxia pós-exposição ao vírus B", "Prevenção da Hepatite C", "Tratamento da Hepatite A"],
+    correta_texto: "Profilaxia pós-exposição ao vírus B",
     feedback_certo: "Correto! A imunoglobulina HBIg é usada como profilaxia após exposição ao vírus, junto com a vacina.",
     feedback_errado: "A imunoglobulina HBIg é indicada para profilaxia pós-exposição ao vírus da Hepatite B."
   },
   {
     texto: "O HBsAg reagente indica:",
-    opcoes: [
-      "Imunidade contra Hepatite B",
-      "Infecção ativa pelo vírus B",
-      "Cura da infecção",
-      "Vacinação completa"
-    ],
-    correta: 1,
+    opcoes: ["Imunidade contra Hepatite B", "Infecção ativa pelo vírus B", "Cura da infecção", "Vacinação completa"],
+    correta_texto: "Infecção ativa pelo vírus B",
     feedback_certo: "Muito bem! HBsAg reagente significa que há infecção ativa pelo vírus B — a pessoa está infectada.",
-    feedback_errado: "HBsAg reagente indica infecção ativa pelo vírus da Hepatite B. Atenção: vacinados têm Anti-HBs positivo!"
+    feedback_errado: "HBsAg reagente indica infecção ativa pelo vírus da Hepatite B. Vacinados têm Anti-HBs positivo!"
   },
   {
     texto: "Qual é o primeiro passo após um teste rápido reagente?",
-    opcoes: [
-      "Iniciar tratamento imediatamente",
-      "Encaminhar para investigação e confirmação diagnóstica",
-      "Dar alta ao paciente",
-      "Apenas repetir o teste rápido"
-    ],
-    correta: 1,
+    opcoes: ["Iniciar tratamento imediatamente", "Encaminhar para confirmação diagnóstica", "Dar alta ao paciente", "Repetir apenas o teste rápido"],
+    correta_texto: "Encaminhar para confirmação diagnóstica",
     feedback_certo: "Correto! Teste reagente é resultado preliminar — deve ser confirmado com exames laboratoriais antes de qualquer conduta.",
-    feedback_errado: "O primeiro passo é encaminhar para investigação e confirmação diagnóstica. Teste rápido é triagem, não diagnóstico definitivo!"
+    feedback_errado: "O primeiro passo é encaminhar para confirmação diagnóstica. Teste rápido é triagem, não diagnóstico definitivo!"
   },
   {
     texto: "Em qual situação está indicada a imunoglobulina contra Hepatite B?",
-    opcoes: [
-      "Após diagnóstico de Hepatite C",
-      "Após exposição de risco em pessoa não imunizada ou com esquema vacinal inadequado",
-      "Em todos os pacientes vacinados",
-      "Apenas em gestantes"
-    ],
-    correta: 1,
+    opcoes: ["Após diagnóstico de Hepatite C", "Após exposição de risco em pessoa não imunizada", "Em todos os pacientes vacinados", "Somente em gestantes"],
+    correta_texto: "Após exposição de risco em pessoa não imunizada",
     feedback_certo: "Excelente! A indicação principal é pós-exposição de risco em pessoas sem imunidade adequada.",
     feedback_errado: "A imunoglobulina é indicada após exposição de risco em pessoa não imunizada ou com vacinação incompleta."
   },
   {
     texto: "Qual é a principal finalidade da vigilância dos contatos?",
-    opcoes: [
-      "Apenas fazer cadastro dos contatos",
-      "Identificar e prevenir novos casos",
-      "Encerrar notificações mais rapidamente",
-      "Atualizar prontuários médicos"
-    ],
-    correta: 1,
+    opcoes: ["Fazer cadastro dos contatos", "Identificar e prevenir novos casos", "Encerrar notificações mais rápido", "Atualizar prontuários médicos"],
+    correta_texto: "Identificar e prevenir novos casos",
     feedback_certo: "Certo! Vigiar os contatos é estratégia fundamental para identificar casos secundários e prevenir a transmissão.",
     feedback_errado: "A vigilância dos contatos tem como finalidade identificar e prevenir novos casos — é uma ação proativa de controle!"
   },
   {
     texto: "Acolhimento adequado contribui para:",
-    opcoes: [
-      "Aumentar o estigma em torno da doença",
-      "Melhor adesão ao tratamento",
-      "Reduzir o número de notificações",
-      "Nenhuma das alternativas"
-    ],
-    correta: 1,
-    feedback_certo: "Perfeito! Acolhimento humanizado é determinante para que o paciente adira ao tratamento e ao acompanhamento.",
+    opcoes: ["Aumentar o estigma", "Melhor adesão ao tratamento", "Reduzir notificações", "Nenhuma das alternativas"],
+    correta_texto: "Melhor adesão ao tratamento",
+    feedback_certo: "Perfeito! Acolhimento humanizado é determinante para que o paciente adira ao tratamento e acompanhamento.",
     feedback_errado: "O acolhimento adequado contribui diretamente para melhor adesão ao tratamento — é parte essencial do cuidado!"
   },
   {
     texto: "A meta global é eliminar as Hepatites Virais como problema de saúde pública até:",
-    opcoes: ["2028", "2030", "2035", "2040"],
-    correta: 1,
+    opcoes: ["2028", "2035", "2030", "2040"],
+    correta_texto: "2030",
     feedback_certo: "Correto! A OMS estabeleceu 2030 como prazo para eliminar as hepatites virais como problema de saúde pública.",
     feedback_errado: "A meta da OMS é 2030 — estamos trabalhando juntos para chegar lá! Cada notificação e diagnóstico conta."
   }
@@ -764,10 +729,28 @@ function mostrarTela(id) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+// Embaralhamento Fisher-Yates
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function renderizarPergunta() {
   respondida = false;
   const p = perguntas[perguntaAtual];
   const total = perguntas.length;
+
+  // Embaralha opções e rastreia posição da correta pelo texto
+  const opcoesEmbaralhadas = shuffle(p.opcoes);
+  const idxCorreta = opcoesEmbaralhadas.indexOf(p.correta_texto);
+
+  // Salva no objeto temporário para responder()
+  p._opcoes_rodada = opcoesEmbaralhadas;
+  p._correta_rodada = idxCorreta;
 
   // Progress
   const pct = Math.round((perguntaAtual / total) * 100);
@@ -781,7 +764,7 @@ function renderizarPergunta() {
   const badges = ["A", "B", "C", "D"];
   const altDiv = document.getElementById("alternativas");
   altDiv.innerHTML = "";
-  p.opcoes.forEach((op, i) => {
+  opcoesEmbaralhadas.forEach((op, i) => {
     const btn = document.createElement("button");
     btn.className = "alt-btn";
     btn.innerHTML = `<span class="alt-badge">${badges[i]}</span><span>${op}</span>`;
@@ -804,11 +787,11 @@ function responder(idx, btnClicado) {
   const botoes = document.querySelectorAll(".alt-btn");
   botoes.forEach(b => b.disabled = true);
 
-  const acertou = idx === p.correta;
+  const acertou = idx === p._correta_rodada;
   if (acertou) { pontos++; }
 
   // Marca alternativas
-  botoes[p.correta].classList.add("correta");
+  botoes[p._correta_rodada].classList.add("correta");
   if (!acertou) btnClicado.classList.add("errada");
 
   // Atualiza placar
