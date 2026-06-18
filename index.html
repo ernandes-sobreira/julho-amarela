@@ -543,14 +543,9 @@
 </div>
 
 <!-- FIREBASE -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, push, onValue, query, orderByChild, limitToLast }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-  // ============================================================
-  //  SUBSTITUA ESTAS CREDENCIAIS PELAS DO SEU PROJETO FIREBASE
-  // ============================================================
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyCbXi3UCVl8oLleBzGb6DqWSxbZmZU2yDQ",
     authDomain: "jogos-ranking.firebaseapp.com",
@@ -560,48 +555,46 @@
     messagingSenderId: "958784915420",
     appId: "1:958784915420:web:4212d3ad278f02d600f119"
   };
-  // ============================================================
 
   let db = null;
   let firebaseOk = false;
 
   try {
-    const app = initializeApp(firebaseConfig);
-    db = getDatabase(app);
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
     firebaseOk = true;
   } catch(e) {
-    console.warn("Firebase não configurado — modo local ativado.", e);
+    console.warn("Firebase erro:", e);
   }
 
-  // Expõe para o código global
   window._fbSalvar = async (nome, municipio, pontos, total) => {
     if (!firebaseOk) return;
     try {
-      const rankRef = ref(db, "julho_amarelo_2026/ranking");
-      await push(rankRef, {
+      await db.ref("julho_amarelo_2026/ranking").push({
         nome,
         municipio,
         pontos,
         total,
-        pct: Math.round((pontos/total)*100),
+        pct: Math.round((pontos / total) * 100),
         ts: Date.now()
       });
-    } catch(e) { console.warn("Erro ao salvar:", e); }
+      console.log("Salvo com sucesso!");
+    } catch(e) {
+      console.warn("Erro ao salvar:", e);
+    }
   };
 
   window._fbOuvirRanking = (callback) => {
     if (!firebaseOk) { callback([]); return; }
-    const rankRef = query(
-      ref(db, "julho_amarelo_2026/ranking"),
-      orderByChild("pontos"),
-      limitToLast(50)
-    );
-    onValue(rankRef, (snapshot) => {
-      const dados = [];
-      snapshot.forEach(child => { dados.push(child.val()); });
-      dados.sort((a,b) => b.pontos - a.pontos || a.ts - b.ts);
-      callback(dados);
-    });
+    db.ref("julho_amarelo_2026/ranking")
+      .orderByChild("pontos")
+      .limitToLast(50)
+      .on("value", (snapshot) => {
+        const dados = [];
+        snapshot.forEach(child => { dados.push(child.val()); });
+        dados.sort((a, b) => b.pontos - a.pontos || a.ts - b.ts);
+        callback(dados);
+      });
   };
 </script>
 
