@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Desvendando as Hepatites Virais | Julho Amarelo 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Space+Grotesk:wght@400;600;700&display=swap');
+
+  :root {
+    --amarelo: #F5C518;
+    --amarelo-escuro: #D4A800;
+    --amarelo-claro: #FFF3B0;
+    --verde: #2ECC71;
+    --verde-escuro: #27AE60;
+    --vermelho: #E74C3C;
+    --vermelho-escuro: #C0392B;
+    --azul: #2980B9;
+    --cinza-bg: #F7F9FC;
+    --cinza-card: #FFFFFF;
+    --cinza-texto: #1A1A2E;
+    --cinza-suave: #8892A0;
+    --roxo: #8E44AD;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cinza-bg);
+    color: var(--cinza-texto);
+    min-height: 100vh;
+  }
+
+  /* ---- TOPO ---- */
+  .header {
+    background: linear-gradient(135deg, #F5C518 0%, #FFD700 50%, #F5A623 100%);
+    padding: 24px 20px 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(245,197,24,0.4);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #6B4000;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 700;
+    color: #1A0A00;
+    line-height: 1.2;
+  }
+  .header p {
+    font-size: 14px;
+    color: #5A3800;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .hepatite-icon { font-size: 48px; margin-bottom: 8px; }
+
+  /* ---- CONTAINER ---- */
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* ---- TELA DE ENTRADA ---- */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .card {
+    background: var(--cinza-card);
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+  }
+
+  .entrada-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--cinza-texto);
+  }
+  .entrada-subtitulo {
+    text-align: center;
+    color: var(--cinza-suave);
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+  .input-group { margin-bottom: 20px; }
+  .input-group label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--cinza-suave);
+  }
+  .input-group input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #E8ECF0;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #FAFBFC;
+  }
+  .input-group input:focus { border-color: var(--amarelo); background: #FFFEF5; }
+
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--amarelo), var(--amarelo-escuro));
+    border: none;
+    border-radius: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A0A00;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(245,197,24,0.5);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(245,197,24,0.6); }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* ---- PROGRESS BAR ---- */
+  .progress-wrap {
+    margin-bottom: 20px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cinza-suave);
+    margin-bottom: 8px;
+  }
+  .progress-bar-bg {
+    background: #E8ECF0;
+    border-radius: 99px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amarelo), var(--amarelo-escuro));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* ---- PERGUNTA ---- */
+  .pergunta-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amarelo-escuro);
+    margin-bottom: 10px;
+  }
+  .pergunta-texto {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(17px, 4vw, 22px);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 24px;
+    color: var(--cinza-texto);
+  }
+
+  /* ---- ALTERNATIVAS ---- */
+  .alternativas { display: flex; flex-direction: column; gap: 12px; }
+
+  .alt-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 18px;
+    border: 2px solid #E8ECF0;
+    border-radius: 14px;
+    background: #FAFBFC;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cinza-texto);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+  }
+  .alt-btn:hover:not(:disabled) {
+    border-color: var(--amarelo);
+    background: #FFFEF0;
+    transform: translateX(4px);
+  }
+  .alt-badge {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    background: #E8ECF0;
+    color: #555;
+    transition: all 0.2s;
+  }
+  .alt-btn:hover:not(:disabled) .alt-badge { background: var(--amarelo); color: #1A0A00; }
+
+  .alt-btn.correta {
+    border-color: var(--verde);
+    background: #E8F8F0;
+    animation: pulseGreen 0.4s ease;
+  }
+  .alt-btn.correta .alt-badge { background: var(--verde); color: white; }
+
+  .alt-btn.errada {
+    border-color: var(--vermelho);
+    background: #FDF0EE;
+  }
+  .alt-btn.errada .alt-badge { background: var(--vermelho); color: white; }
+
+  .alt-btn:disabled { cursor: default; }
+
+  @keyframes pulseGreen {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+
+  /* ---- FEEDBACK ---- */
+  .feedback-box {
+    display: none;
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-top: 16px;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.acerto { background: linear-gradient(135deg, #E8F8F0, #D5F4E6); border: 2px solid var(--verde); }
+  .feedback-box.erro { background: linear-gradient(135deg, #FDF0EE, #FAE5E3); border: 2px solid var(--vermelho); }
+
+  .feedback-emoji { font-size: 40px; margin-bottom: 8px; display: block; }
+  .feedback-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .feedback-box.acerto .feedback-titulo { color: var(--verde-escuro); }
+  .feedback-box.erro .feedback-titulo { color: var(--vermelho-escuro); }
+  .feedback-msg { font-size: 14px; color: #555; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---- BOTÃO PRÓXIMA ---- */
+  .btn-proxima {
+    width: 100%;
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--cinza-texto);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    transition: background 0.2s;
+  }
+  .btn-proxima:hover { background: #2C2C4E; }
+  .btn-proxima.show { display: block; }
+
+  /* ---- PLACAR AO VIVO ---- */
+  .placar-vivo {
+    background: linear-gradient(135deg, var(--amarelo-claro), #FFFBDC);
+    border: 2px solid var(--amarelo);
+    border-radius: 16px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .placar-nome { font-weight: 700; font-size: 15px; color: #5A3800; }
+  .placar-pts { font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 22px; color: var(--amarelo-escuro); }
+  .placar-label { font-size: 12px; color: var(--cinza-suave); }
+
+  /* ---- TELA FINAL ---- */
+  .resultado-hero {
+    text-align: center;
+    padding: 16px 0 24px;
+  }
+  .resultado-emoji { font-size: 72px; display: block; margin-bottom: 12px; }
+  .resultado-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .resultado-subtitulo { color: var(--cinza-suave); font-size: 15px; margin-bottom: 20px; }
+
+  .resultado-score-card {
+    background: linear-gradient(135deg, var(--amarelo), var(--amarelo-escuro));
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    margin: 0 0 20px;
+  }
+  .resultado-score-numero {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: #1A0A00;
+    line-height: 1;
+  }
+  .resultado-score-total { font-size: 20px; color: #5A3800; font-weight: 700; }
+  .resultado-score-pts { font-size: 14px; color: #5A3800; margin-top: 4px; }
+
+  .resultado-msg {
+    background: #F0F4FF;
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 15px;
+    color: #2C3E7A;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  /* ---- RANKING ---- */
+  .ranking-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .ranking-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .ranking-header span { font-size: 22px; }
+
+  .ranking-lista { display: flex; flex-direction: column; gap: 10px; }
+
+  .ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: #F7F9FC;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .ranking-item.destaque {
+    background: linear-gradient(135deg, #FFFBDC, #FFF3B0);
+    border-color: var(--amarelo);
+  }
+  .ranking-pos {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 16px;
+    background: #E8ECF0;
+    color: #555;
+  }
+  .ranking-pos.ouro { background: linear-gradient(135deg, #FFD700, #FFA500); color: white; }
+  .ranking-pos.prata { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); color: white; }
+  .ranking-pos.bronze { background: linear-gradient(135deg, #CD7F32, #A05C20); color: white; }
+
+  .ranking-nome { flex: 1; font-weight: 700; font-size: 15px; }
+  .ranking-pts {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--amarelo-escuro);
+  }
+  .ranking-pts-label { font-size: 11px; color: var(--cinza-suave); text-align: right; }
+
+  .ranking-vazio { text-align: center; color: var(--cinza-suave); padding: 20px; font-size: 14px; }
+
+  .btn-jogar-novo {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--amarelo), var(--amarelo-escuro));
+    border: none;
+    border-radius: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A0A00;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 4px 16px rgba(245,197,24,0.4);
+    transition: transform 0.15s;
+  }
+  .btn-jogar-novo:hover { transform: translateY(-2px); }
+
+  .loading-rank {
+    text-align: center;
+    color: var(--cinza-suave);
+    padding: 16px;
+    font-size: 14px;
+  }
+  .loading-rank::after { content: '...'; animation: dots 1.2s infinite; }
+  @keyframes dots { 0%,100%{content:'.'} 33%{content:'..'} 66%{content:'...'} }
+
+  /* ---- CONFETTI (simples) ---- */
+  .confetti-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    pointer-events: none;
+    overflow: hidden;
+    height: 100vh;
+    z-index: 9999;
+  }
+  .confetto {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    animation: fall linear forwards;
+    top: -20px;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ---- RESPONSIVO ---- */
+  @media (max-width: 480px) {
+    .card { padding: 22px 16px; }
+    .alt-btn { font-size: 14px; padding: 13px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CONFETTI CONTAINER -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="hepatite-icon">🟡</div>
+  <div class="header-badge">Julho Amarelo 2026</div>
+  <h1>Desvendando as Hepatites Virais</h1>
+  <p>Capacitação Regional | Escritório Regional de Saúde de Cáceres</p>
+  <p style="margin-top:10px; font-size:13px; color:#7A5500; font-weight:600;">Idealizado por Nathália Ribeiro · Vigilância Epidemiológica<br>Escritório Regional de Saúde de Cáceres · SES-MT</p>
+</div>
+
+<div class="container">
+
+  <!-- TELA 1: ENTRADA -->
+  <div id="tela-entrada" class="screen active">
+    <div class="card">
+      <div class="entrada-titulo">🏥 Bora jogar!</div>
+      <div class="entrada-subtitulo">Teste seus conhecimentos sobre Hepatites Virais e dispute o ranking com sua equipe.</div>
+      <div class="input-group">
+        <label>Seu nome completo</label>
+        <input type="text" id="inputNome" placeholder="Ex: Maria Silva" maxlength="40" autocomplete="off"/>
+      </div>
+      <div class="input-group">
+        <label>Município / Instituição</label>
+        <input type="text" id="inputMunicipio" placeholder="Ex: Cáceres - UBS Central" maxlength="50" autocomplete="off"/>
+      </div>
+      <button class="btn-primary" onclick="iniciarQuiz()">🚀 Começar o Quiz!</button>
+    </div>
+  </div>
+
+  <!-- TELA 2: QUIZ -->
+  <div id="tela-quiz" class="screen">
+    <div class="placar-vivo">
+      <div>
+        <div class="placar-nome" id="placar-nome-live">—</div>
+        <div class="placar-label">jogador</div>
+      </div>
+      <div style="text-align:right">
+        <div class="placar-pts" id="placar-pts-live">0</div>
+        <div class="placar-label">pontos</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-texto">Pergunta 1 de 10</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card" id="quiz-card">
+      <div class="pergunta-num" id="perg-num">PERGUNTA 1</div>
+      <div class="pergunta-texto" id="perg-texto"></div>
+      <div class="alternativas" id="alternativas"></div>
+      <div class="feedback-box" id="feedback"></div>
+      <button class="btn-proxima" id="btn-proxima" onclick="proximaPergunta()">Próxima pergunta →</button>
+    </div>
+  </div>
+
+  <!-- TELA 3: RESULTADO + RANKING -->
+  <div id="tela-resultado" class="screen">
+    <div class="card">
+      <div class="resultado-hero" id="resultado-hero"></div>
+      <div class="resultado-score-card" id="resultado-score"></div>
+      <div class="resultado-msg" id="resultado-msg"></div>
+    </div>
+
+    <div class="card">
+      <div class="ranking-header">
+        <span>🏆</span>
+        <h2>Ranking Global</h2>
+      </div>
+      <div class="ranking-lista" id="ranking-lista">
+        <div class="loading-rank">Carregando ranking</div>
+      </div>
+      <button class="btn-jogar-novo" onclick="jogarNovamente()">🔄 Jogar novamente</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, push, onValue, query, orderByChild, limitToLast }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ============================================================
+  //  SUBSTITUA ESTAS CREDENCIAIS PELAS DO SEU PROJETO FIREBASE
+  // ============================================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyCbXi3UCVl8oLleBzGb6DqWSxbZmZU2yDQ",
+    authDomain: "jogos-ranking.firebaseapp.com",
+    databaseURL: "https://jogos-ranking-default-rtdb.firebaseio.com",
+    projectId: "jogos-ranking",
+    storageBucket: "jogos-ranking.firebasestorage.app",
+    messagingSenderId: "958784915420",
+    appId: "1:958784915420:web:4212d3ad278f02d600f119"
+  };
+  // ============================================================
+
+  let db = null;
+  let firebaseOk = false;
+
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app);
+    firebaseOk = true;
+  } catch(e) {
+    console.warn("Firebase não configurado — modo local ativado.", e);
+  }
+
+  // Expõe para o código global
+  window._fbSalvar = async (nome, municipio, pontos, total) => {
+    if (!firebaseOk) return;
+    try {
+      const rankRef = ref(db, "julho_amarelo_2026/ranking");
+      await push(rankRef, {
+        nome,
+        municipio,
+        pontos,
+        total,
+        pct: Math.round((pontos/total)*100),
+        ts: Date.now()
+      });
+    } catch(e) { console.warn("Erro ao salvar:", e); }
+  };
+
+  window._fbOuvirRanking = (callback) => {
+    if (!firebaseOk) { callback([]); return; }
+    const rankRef = query(
+      ref(db, "julho_amarelo_2026/ranking"),
+      orderByChild("pontos"),
+      limitToLast(50)
+    );
+    onValue(rankRef, (snapshot) => {
+      const dados = [];
+      snapshot.forEach(child => { dados.push(child.val()); });
+      dados.sort((a,b) => b.pontos - a.pontos || a.ts - b.ts);
+      callback(dados);
+    });
+  };
+</script>
+
+<script>
+// ====================== PERGUNTAS ======================
+const perguntas = [
+  {
+    texto: "Qual hepatite possui vacina disponível no SUS?",
+    opcoes: ["Hepatite C", "Hepatite B", "Hepatite D", "Todas as anteriores"],
+    correta: 1,
+    feedback_certo: "Exatamente! A vacina contra Hepatite B está disponível gratuitamente no SUS para todas as idades.",
+    feedback_errado: "A vacina disponível no SUS é contra a Hepatite B. Ela faz parte do calendário nacional de vacinação!"
+  },
+  {
+    texto: "Qual sistema é utilizado para notificação das Hepatites Virais?",
+    opcoes: ["SISAB", "e-SUS", "SINAN", "GAL"],
+    correta: 2,
+    feedback_certo: "Certo! O SINAN (Sistema de Informação de Agravos de Notificação) é onde as hepatites virais são registradas.",
+    feedback_errado: "O sistema correto é o SINAN — Sistema de Informação de Agravos de Notificação."
+  },
+  {
+    texto: "Qual profissional é responsável pela notificação compulsória?",
+    opcoes: [
+      "Apenas médicos",
+      "Apenas enfermeiros",
+      "Apenas vigilância epidemiológica",
+      "Qualquer profissional de saúde que identificar o caso"
+    ],
+    correta: 3,
+    feedback_certo: "Perfeito! Qualquer profissional de saúde que identificar ou suspeitar de um caso é obrigado a notificar.",
+    feedback_errado: "Atenção: a notificação compulsória é responsabilidade de QUALQUER profissional de saúde que identificar o caso!"
+  },
+  {
+    texto: "A imunoglobulina para Hepatite B é recomendada principalmente para:",
+    opcoes: [
+      "Tratamento da Hepatite B crônica",
+      "Profilaxia pós-exposição ao vírus da Hepatite B",
+      "Prevenção da Hepatite C",
+      "Tratamento da Hepatite A"
+    ],
+    correta: 1,
+    feedback_certo: "Correto! A imunoglobulina HBIg é usada como profilaxia após exposição ao vírus, junto com a vacina.",
+    feedback_errado: "A imunoglobulina HBIg é indicada para profilaxia pós-exposição ao vírus da Hepatite B."
+  },
+  {
+    texto: "O HBsAg reagente indica:",
+    opcoes: [
+      "Imunidade contra Hepatite B",
+      "Infecção ativa pelo vírus B",
+      "Cura da infecção",
+      "Vacinação completa"
+    ],
+    correta: 1,
+    feedback_certo: "Muito bem! HBsAg reagente significa que há infecção ativa pelo vírus B — a pessoa está infectada.",
+    feedback_errado: "HBsAg reagente indica infecção ativa pelo vírus da Hepatite B. Atenção: vacinados têm Anti-HBs positivo!"
+  },
+  {
+    texto: "Qual é o primeiro passo após um teste rápido reagente?",
+    opcoes: [
+      "Iniciar tratamento imediatamente",
+      "Encaminhar para investigação e confirmação diagnóstica",
+      "Dar alta ao paciente",
+      "Apenas repetir o teste rápido"
+    ],
+    correta: 1,
+    feedback_certo: "Correto! Teste reagente é resultado preliminar — deve ser confirmado com exames laboratoriais antes de qualquer conduta.",
+    feedback_errado: "O primeiro passo é encaminhar para investigação e confirmação diagnóstica. Teste rápido é triagem, não diagnóstico definitivo!"
+  },
+  {
+    texto: "Em qual situação está indicada a imunoglobulina contra Hepatite B?",
+    opcoes: [
+      "Após diagnóstico de Hepatite C",
+      "Após exposição de risco em pessoa não imunizada ou com esquema vacinal inadequado",
+      "Em todos os pacientes vacinados",
+      "Apenas em gestantes"
+    ],
+    correta: 1,
+    feedback_certo: "Excelente! A indicação principal é pós-exposição de risco em pessoas sem imunidade adequada.",
+    feedback_errado: "A imunoglobulina é indicada após exposição de risco em pessoa não imunizada ou com vacinação incompleta."
+  },
+  {
+    texto: "Qual é a principal finalidade da vigilância dos contatos?",
+    opcoes: [
+      "Apenas fazer cadastro dos contatos",
+      "Identificar e prevenir novos casos",
+      "Encerrar notificações mais rapidamente",
+      "Atualizar prontuários médicos"
+    ],
+    correta: 1,
+    feedback_certo: "Certo! Vigiar os contatos é estratégia fundamental para identificar casos secundários e prevenir a transmissão.",
+    feedback_errado: "A vigilância dos contatos tem como finalidade identificar e prevenir novos casos — é uma ação proativa de controle!"
+  },
+  {
+    texto: "Acolhimento adequado contribui para:",
+    opcoes: [
+      "Aumentar o estigma em torno da doença",
+      "Melhor adesão ao tratamento",
+      "Reduzir o número de notificações",
+      "Nenhuma das alternativas"
+    ],
+    correta: 1,
+    feedback_certo: "Perfeito! Acolhimento humanizado é determinante para que o paciente adira ao tratamento e ao acompanhamento.",
+    feedback_errado: "O acolhimento adequado contribui diretamente para melhor adesão ao tratamento — é parte essencial do cuidado!"
+  },
+  {
+    texto: "A meta global é eliminar as Hepatites Virais como problema de saúde pública até:",
+    opcoes: ["2028", "2030", "2035", "2040"],
+    correta: 1,
+    feedback_certo: "Correto! A OMS estabeleceu 2030 como prazo para eliminar as hepatites virais como problema de saúde pública.",
+    feedback_errado: "A meta da OMS é 2030 — estamos trabalhando juntos para chegar lá! Cada notificação e diagnóstico conta."
+  }
+];
+
+// ====================== ESTADO ======================
+let nomeJogador = "";
+let municipioJogador = "";
+let perguntaAtual = 0;
+let pontos = 0;
+let respondida = false;
+
+const frasesCerto = [
+  "👍 Joinha! Você mandou bem!",
+  "🎯 Na mosca! Conhecimento de especialista!",
+  "💪 Isso aí! Continue assim!",
+  "⭐ Excelente! Você está craque!",
+  "🔥 Tá pegando fogo! Acertou em cheio!",
+  "🏆 Resposta perfeita! Parabéns!",
+  "✨ Brilhante! Mais um ponto pra você!"
+];
+
+const frasesErro = [
+  "😬 Quase! Mas cada erro é um aprendizado!",
+  "🙃 É uma pena... mas você vai aprender com isso!",
+  "😅 Ops! Essa escapou — mas já sabe a resposta certa!",
+  "🤔 Hmm, não dessa vez! Mas o conteúdo ficou mais fresco na memória!",
+  "😮 Que pena! Anota aí a resposta correta!",
+  "😬 Errinho bom de ver! Agora não esquece mais!",
+  "🫣 Passou reto essa! Mas fica tranquilo — erro faz parte do aprendizado!"
+];
+
+const mensagensFinal = [
+  { min: 9, emoji: "🏆", titulo: "Especialista em Hepatites!", msg: "Desempenho extraordinário! Você domina o tema e certamente vai fazer a diferença na Região Oeste de MT." },
+  { min: 7, emoji: "🌟", titulo: "Muito bem preparado!", msg: "Ótimo desempenho! Com esse nível de conhecimento, você contribui muito para a eliminação das hepatites até 2030." },
+  { min: 5, emoji: "💪", titulo: "No caminho certo!", msg: "Bom aproveitamento. Revise os pontos que erraram — cada detalhe importa na prática clínica." },
+  { min: 3, emoji: "📚", titulo: "Precisa de mais estudo!", msg: "Não desanime! Esse é exatamente o objetivo da capacitação. Revise o material e tente novamente." },
+  { min: 0, emoji: "🌱", titulo: "Boa oportunidade de aprender!", msg: "Hoje é dia de aprender! Use os recursos da capacitação e volte ao quiz mais preparado." }
+];
+
+// ====================== FUNÇÕES ======================
+function iniciarQuiz() {
+  const nome = document.getElementById("inputNome").value.trim();
+  const municipio = document.getElementById("inputMunicipio").value.trim();
+  if (!nome) { alert("Por favor, informe seu nome para começar!"); return; }
+  nomeJogador = nome;
+  municipioJogador = municipio || "Não informado";
+  perguntaAtual = 0;
+  pontos = 0;
+  mostrarTela("tela-quiz");
+  document.getElementById("placar-nome-live").textContent = nome.split(" ")[0];
+  document.getElementById("placar-pts-live").textContent = "0";
+  renderizarPergunta();
+}
+
+function mostrarTela(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderizarPergunta() {
+  respondida = false;
+  const p = perguntas[perguntaAtual];
+  const total = perguntas.length;
+
+  // Progress
+  const pct = Math.round((perguntaAtual / total) * 100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-texto").textContent = `Pergunta ${perguntaAtual + 1} de ${total}`;
+  document.getElementById("progress-pct").textContent = pct + "%";
+
+  document.getElementById("perg-num").textContent = `PERGUNTA ${perguntaAtual + 1}`;
+  document.getElementById("perg-texto").textContent = p.texto;
+
+  const badges = ["A", "B", "C", "D"];
+  const altDiv = document.getElementById("alternativas");
+  altDiv.innerHTML = "";
+  p.opcoes.forEach((op, i) => {
+    const btn = document.createElement("button");
+    btn.className = "alt-btn";
+    btn.innerHTML = `<span class="alt-badge">${badges[i]}</span><span>${op}</span>`;
+    btn.onclick = () => responder(i, btn);
+    altDiv.appendChild(btn);
+  });
+
+  const fb = document.getElementById("feedback");
+  fb.className = "feedback-box";
+  fb.innerHTML = "";
+  const prox = document.getElementById("btn-proxima");
+  prox.className = "btn-proxima";
+  prox.textContent = perguntaAtual < total - 1 ? "Próxima pergunta →" : "Ver meu resultado 🏆";
+}
+
+function responder(idx, btnClicado) {
+  if (respondida) return;
+  respondida = true;
+  const p = perguntas[perguntaAtual];
+  const botoes = document.querySelectorAll(".alt-btn");
+  botoes.forEach(b => b.disabled = true);
+
+  const acertou = idx === p.correta;
+  if (acertou) { pontos++; }
+
+  // Marca alternativas
+  botoes[p.correta].classList.add("correta");
+  if (!acertou) btnClicado.classList.add("errada");
+
+  // Atualiza placar
+  document.getElementById("placar-pts-live").textContent = pontos;
+
+  // Feedback
+  const frases = acertou ? frasesCerto : frasesErro;
+  const frase = frases[Math.floor(Math.random() * frases.length)];
+  const fb = document.getElementById("feedback");
+  fb.innerHTML = `
+    <span class="feedback-emoji">${acertou ? "👍" : "😬"}</span>
+    <div class="feedback-titulo">${frase}</div>
+    <div class="feedback-msg">${acertou ? p.feedback_certo : p.feedback_errado}</div>
+  `;
+  fb.className = "feedback-box show " + (acertou ? "acerto" : "erro");
+
+  document.getElementById("btn-proxima").className = "btn-proxima show";
+
+  if (acertou) confetti();
+}
+
+function proximaPergunta() {
+  perguntaAtual++;
+  if (perguntaAtual >= perguntas.length) {
+    finalizarQuiz();
+  } else {
+    renderizarPergunta();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+async function finalizarQuiz() {
+  // Salva no Firebase
+  if (window._fbSalvar) {
+    await window._fbSalvar(nomeJogador, municipioJogador, pontos, perguntas.length);
+  }
+
+  mostrarTela("tela-resultado");
+  renderizarResultado();
+  carregarRanking();
+}
+
+function renderizarResultado() {
+  const total = perguntas.length;
+  const pct = Math.round((pontos / total) * 100);
+
+  // Mensagem final
+  const msg = mensagensFinal.find(m => pontos >= m.min);
+
+  document.getElementById("resultado-hero").innerHTML = `
+    <span class="resultado-emoji">${msg.emoji}</span>
+    <div class="resultado-titulo">${msg.titulo}</div>
+    <div class="resultado-subtitulo">${nomeJogador}, seu desempenho foi:</div>
+  `;
+
+  document.getElementById("resultado-score").innerHTML = `
+    <div class="resultado-score-numero">${pontos}</div>
+    <div class="resultado-score-total">de ${total} acertos</div>
+    <div class="resultado-score-pts">${pct}% de aproveitamento</div>
+  `;
+
+  document.getElementById("resultado-msg").textContent = msg.msg;
+
+  if (pontos >= 9) confetti(80);
+  else if (pontos >= 7) confetti(40);
+}
+
+function carregarRanking() {
+  const listaEl = document.getElementById("ranking-lista");
+
+  if (!window._fbOuvirRanking) {
+    listaEl.innerHTML = `<div class="ranking-vazio">Firebase não configurado. Configure as credenciais para ver o ranking global.</div>`;
+    return;
+  }
+
+  window._fbOuvirRanking((dados) => {
+    if (!dados || dados.length === 0) {
+      listaEl.innerHTML = `<div class="ranking-vazio">Seja o primeiro a aparecer aqui! 🌟</div>`;
+      return;
+    }
+
+    // Remove duplicatas por nome (mantém melhor pontuação)
+    const mapa = new Map();
+    dados.forEach(d => {
+      const key = d.nome.toLowerCase().trim();
+      if (!mapa.has(key) || d.pontos > mapa.get(key).pontos) mapa.set(key, d);
+    });
+    const lista = Array.from(mapa.values()).sort((a,b) => b.pontos - a.pontos || a.ts - b.ts);
+    const top = lista.slice(0, 20);
+
+    const posClasse = ["ouro","prata","bronze"];
+    const posEmoji = ["🥇","🥈","🥉"];
+
+    listaEl.innerHTML = top.map((item, i) => {
+      const ehVoce = item.nome.toLowerCase().trim() === nomeJogador.toLowerCase().trim();
+      const posClass = i < 3 ? posClasse[i] : "";
+      const posLabel = i < 3 ? posEmoji[i] : `#${i+1}`;
+      return `
+        <div class="ranking-item ${ehVoce ? "destaque" : ""}">
+          <div class="ranking-pos ${posClass}">${posLabel}</div>
+          <div>
+            <div class="ranking-nome">${item.nome} ${ehVoce ? "⭐" : ""}</div>
+            <div style="font-size:12px;color:#888">${item.municipio || ""}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="ranking-pts">${item.pontos}</div>
+            <div class="ranking-pts-label">/${item.total} pts</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  });
+}
+
+function jogarNovamente() {
+  perguntaAtual = 0;
+  pontos = 0;
+  nomeJogador = "";
+  municipioJogador = "";
+  document.getElementById("inputNome").value = "";
+  document.getElementById("inputMunicipio").value = "";
+  mostrarTela("tela-entrada");
+}
+
+// ====================== CONFETTI ======================
+function confetti(qtd = 30) {
+  const wrap = document.getElementById("confettiWrap");
+  const cores = ["#F5C518","#2ECC71","#E74C3C","#3498DB","#9B59B6","#FF6B35","#FFD700"];
+  for (let i = 0; i < qtd; i++) {
+    setTimeout(() => {
+      const el = document.createElement("div");
+      el.className = "confetto";
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.background = cores[Math.floor(Math.random() * cores.length)];
+      el.style.width = (8 + Math.random() * 8) + "px";
+      el.style.height = (8 + Math.random() * 8) + "px";
+      el.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+      el.style.animationDelay = Math.random() * 0.5 + "s";
+      wrap.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 30);
+  }
+}
+
+// Enter na tela de entrada
+document.getElementById("inputMunicipio").addEventListener("keydown", e => {
+  if (e.key === "Enter") iniciarQuiz();
+});
+document.getElementById("inputNome").addEventListener("keydown", e => {
+  if (e.key === "Enter") document.getElementById("inputMunicipio").focus();
+});
+</script>
+</body>
+</html>
