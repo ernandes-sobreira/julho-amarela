@@ -448,6 +448,45 @@
     to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
   }
 
+  /* ---- TIMER ---- */
+  .timer-wrap {
+    margin-bottom: 16px;
+  }
+  .timer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .timer-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cinza-suave);
+  }
+  .timer-segundos {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--cinza-texto);
+    transition: color 0.3s;
+  }
+  .timer-segundos.urgente { color: var(--vermelho); animation: pulseRed 0.5s infinite; }
+  @keyframes pulseRed { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .timer-bar-bg {
+    background: #E8ECF0;
+    border-radius: 99px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .timer-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s linear, background 0.5s;
+    background: var(--verde);
+  }
+  .timer-bar-fill.meio { background: var(--amarelo-escuro); }
+  .timer-bar-fill.urgente { background: var(--vermelho); }
+
   /* ---- RESPONSIVO ---- */
   @media (max-width: 480px) {
     .card { padding: 22px 16px; }
@@ -508,6 +547,16 @@
       </div>
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="timer-wrap" id="timer-wrap">
+      <div class="timer-info">
+        <span class="timer-label">⏱ Tempo restante</span>
+        <span class="timer-segundos" id="timer-num">20</span>
+      </div>
+      <div class="timer-bar-bg">
+        <div class="timer-bar-fill" id="timer-bar" style="width:100%"></div>
       </div>
     </div>
 
@@ -617,14 +666,14 @@ const perguntas = [
   },
   {
     texto: "Qual profissional é responsável pela notificação compulsória?",
-    opcoes: ["Apenas médicos", "Apenas enfermeiros", "Apenas a vigilância epidemiológica", "Qualquer profissional de saúde que identificar o caso"],
-    correta_texto: "Qualquer profissional de saúde que identificar o caso",
+    opcoes: ["Somente o médico que atende o caso", "Somente o enfermeiro que faz o teste", "Somente a equipe de vigilância local", "Qualquer profissional que identificou"],
+    correta_texto: "Qualquer profissional que identificou",
     feedback_certo: "Perfeito! Qualquer profissional de saúde que identificar ou suspeitar de um caso é obrigado a notificar.",
     feedback_errado: "A notificação compulsória é responsabilidade de QUALQUER profissional de saúde que identificar o caso!"
   },
   {
     texto: "A imunoglobulina para Hepatite B é recomendada principalmente para:",
-    opcoes: ["Tratamento da Hepatite B crônica", "Profilaxia pós-exposição ao vírus B", "Prevenção da Hepatite C", "Tratamento da Hepatite A"],
+    opcoes: ["Tratamento da forma crônica do vírus B", "Profilaxia pós-exposição ao vírus B", "Tratamento da Hepatite C em fase aguda", "Prevenção e controle da Hepatite A"],
     correta_texto: "Profilaxia pós-exposição ao vírus B",
     feedback_certo: "Correto! A imunoglobulina HBIg é usada como profilaxia após exposição ao vírus, junto com a vacina.",
     feedback_errado: "A imunoglobulina HBIg é indicada para profilaxia pós-exposição ao vírus da Hepatite B."
@@ -638,29 +687,29 @@ const perguntas = [
   },
   {
     texto: "Qual é o primeiro passo após um teste rápido reagente?",
-    opcoes: ["Iniciar tratamento imediatamente", "Encaminhar para confirmação diagnóstica", "Dar alta ao paciente", "Repetir apenas o teste rápido"],
-    correta_texto: "Encaminhar para confirmação diagnóstica",
+    opcoes: ["Iniciar o esquema de tratamento", "Confirmar com exame laboratorial", "Encaminhar de imediato para a alta", "Solicitar novo teste rápido apenas"],
+    correta_texto: "Confirmar com exame laboratorial",
     feedback_certo: "Correto! Teste reagente é resultado preliminar — deve ser confirmado com exames laboratoriais antes de qualquer conduta.",
     feedback_errado: "O primeiro passo é encaminhar para confirmação diagnóstica. Teste rápido é triagem, não diagnóstico definitivo!"
   },
   {
     texto: "Em qual situação está indicada a imunoglobulina contra Hepatite B?",
-    opcoes: ["Após diagnóstico de Hepatite C", "Após exposição de risco em pessoa não imunizada", "Em todos os pacientes vacinados", "Somente em gestantes"],
-    correta_texto: "Após exposição de risco em pessoa não imunizada",
+    opcoes: ["Após diagnóstico confirmado de Hepatite C", "Após exposição de risco sem imunidade", "Em todos os pacientes com vacinação prévia", "Somente no período gestacional"],
+    correta_texto: "Após exposição de risco sem imunidade",
     feedback_certo: "Excelente! A indicação principal é pós-exposição de risco em pessoas sem imunidade adequada.",
     feedback_errado: "A imunoglobulina é indicada após exposição de risco em pessoa não imunizada ou com vacinação incompleta."
   },
   {
     texto: "Qual é a principal finalidade da vigilância dos contatos?",
-    opcoes: ["Fazer cadastro dos contatos", "Identificar e prevenir novos casos", "Encerrar notificações mais rápido", "Atualizar prontuários médicos"],
+    opcoes: ["Registrar os contatos no sistema", "Identificar e prevenir novos casos", "Encerrar as notificações em aberto", "Atualizar os prontuários médicos"],
     correta_texto: "Identificar e prevenir novos casos",
     feedback_certo: "Certo! Vigiar os contatos é estratégia fundamental para identificar casos secundários e prevenir a transmissão.",
     feedback_errado: "A vigilância dos contatos tem como finalidade identificar e prevenir novos casos — é uma ação proativa de controle!"
   },
   {
     texto: "Acolhimento adequado contribui para:",
-    opcoes: ["Aumentar o estigma", "Melhor adesão ao tratamento", "Reduzir notificações", "Nenhuma das alternativas"],
-    correta_texto: "Melhor adesão ao tratamento",
+    opcoes: ["Aumentar o estigma social", "Melhorar a adesão ao tratamento", "Diminuir o número de notificações", "Não apresenta efeito comprovado"],
+    correta_texto: "Melhorar a adesão ao tratamento",
     feedback_certo: "Perfeito! Acolhimento humanizado é determinante para que o paciente adira ao tratamento e acompanhamento.",
     feedback_errado: "O acolhimento adequado contribui diretamente para melhor adesão ao tratamento — é parte essencial do cuidado!"
   },
@@ -675,6 +724,9 @@ const perguntas = [
 
 // ====================== ESTADO ======================
 let nomeJogador = "";
+let timerInterval = null;
+let timerSegundos = 20;
+const TEMPO_TOTAL = 20;
 let municipioJogador = "";
 let perguntaAtual = 0;
 let pontos = 0;
@@ -701,10 +753,10 @@ const frasesErro = [
 ];
 
 const mensagensFinal = [
-  { min: 9, emoji: "🏆", titulo: "Especialista em Hepatites!", msg: "Desempenho extraordinário! Você domina o tema e certamente vai fazer a diferença na Região Oeste de MT." },
-  { min: 7, emoji: "🌟", titulo: "Muito bem preparado!", msg: "Ótimo desempenho! Com esse nível de conhecimento, você contribui muito para a eliminação das hepatites até 2030." },
-  { min: 5, emoji: "💪", titulo: "No caminho certo!", msg: "Bom aproveitamento. Revise os pontos que erraram — cada detalhe importa na prática clínica." },
-  { min: 3, emoji: "📚", titulo: "Precisa de mais estudo!", msg: "Não desanime! Esse é exatamente o objetivo da capacitação. Revise o material e tente novamente." },
+  { min: 85, emoji: "🏆", titulo: "Especialista em Hepatites!", msg: "Desempenho extraordinário! Você domina o tema e certamente vai fazer a diferença na Região Oeste de MT." },
+  { min: 65, emoji: "🌟", titulo: "Muito bem preparado!", msg: "Ótimo desempenho! Com esse nível de conhecimento, você contribui muito para a eliminação das hepatites até 2030." },
+  { min: 45, emoji: "💪", titulo: "No caminho certo!", msg: "Bom aproveitamento. Revise os pontos que erraram — cada detalhe importa na prática clínica." },
+  { min: 25, emoji: "📚", titulo: "Precisa de mais estudo!", msg: "Não desanime! Esse é exatamente o objetivo da capacitação. Revise o material e tente novamente." },
   { min: 0, emoji: "🌱", titulo: "Boa oportunidade de aprender!", msg: "Hoje é dia de aprender! Use os recursos da capacitação e volte ao quiz mais preparado." }
 ];
 
@@ -727,6 +779,68 @@ function mostrarTela(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ====================== TIMER ======================
+function iniciarTimer() {
+  pararTimer();
+  timerSegundos = TEMPO_TOTAL;
+  atualizarTimerUI();
+  timerInterval = setInterval(() => {
+    timerSegundos--;
+    atualizarTimerUI();
+    if (timerSegundos <= 0) {
+      pararTimer();
+      tempoEsgotado();
+    }
+  }, 1000);
+}
+
+function pararTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function atualizarTimerUI() {
+  const num = document.getElementById("timer-num");
+  const bar = document.getElementById("timer-bar");
+  if (!num || !bar) return;
+  const pct = (timerSegundos / TEMPO_TOTAL) * 100;
+  num.textContent = timerSegundos;
+  bar.style.width = pct + "%";
+  // Cores
+  if (timerSegundos <= 5) {
+    num.className = "timer-segundos urgente";
+    bar.className = "timer-bar-fill urgente";
+  } else if (timerSegundos <= 10) {
+    num.className = "timer-segundos";
+    bar.className = "timer-bar-fill meio";
+  } else {
+    num.className = "timer-segundos";
+    bar.className = "timer-bar-fill";
+  }
+}
+
+function tempoEsgotado() {
+  if (respondida) return;
+  respondida = true;
+  const p = perguntas[perguntaAtual];
+  const botoes = document.querySelectorAll(".alt-btn");
+  botoes.forEach(b => b.disabled = true);
+  botoes[p._correta_rodada].classList.add("correta");
+
+  const fb = document.getElementById("feedback");
+  fb.innerHTML = `
+    <span class="feedback-emoji">⏰</span>
+    <div class="feedback-titulo">Tempo esgotado!</div>
+    <div class="feedback-msg">Sem pontos dessa vez. A resposta correta estava destacada em verde.</div>
+  `;
+  fb.className = "feedback-box show erro";
+  document.getElementById("btn-proxima").className = "btn-proxima show";
+}
+
+// Calcula pontos baseado no tempo restante (1 a 10)
+function calcularPontos() {
+  return Math.max(1, Math.round((timerSegundos / TEMPO_TOTAL) * 10));
 }
 
 // Embaralhamento Fisher-Yates
@@ -778,6 +892,8 @@ function renderizarPergunta() {
   const prox = document.getElementById("btn-proxima");
   prox.className = "btn-proxima";
   prox.textContent = perguntaAtual < total - 1 ? "Próxima pergunta →" : "Ver meu resultado 🏆";
+
+  iniciarTimer();
 }
 
 function responder(idx, btnClicado) {
@@ -788,7 +904,9 @@ function responder(idx, btnClicado) {
   botoes.forEach(b => b.disabled = true);
 
   const acertou = idx === p._correta_rodada;
-  if (acertou) { pontos++; }
+  pararTimer();
+  const ptGanhos = acertou ? calcularPontos() : 0;
+  pontos += ptGanhos;
 
   // Marca alternativas
   botoes[p._correta_rodada].classList.add("correta");
@@ -824,6 +942,7 @@ function proximaPergunta() {
 }
 
 async function finalizarQuiz() {
+  pararTimer();
   // Salva no Firebase
   if (window._fbSalvar) {
     await window._fbSalvar(nomeJogador, municipioJogador, pontos, perguntas.length);
@@ -836,10 +955,10 @@ async function finalizarQuiz() {
 
 function renderizarResultado() {
   const total = perguntas.length;
-  const pct = Math.round((pontos / total) * 100);
+  const pct = Math.round((pontos / (total * 10)) * 100);
 
   // Mensagem final
-  const msg = mensagensFinal.find(m => pontos >= m.min);
+  const msg = mensagensFinal.find(m => pct >= m.min);
 
   document.getElementById("resultado-hero").innerHTML = `
     <span class="resultado-emoji">${msg.emoji}</span>
@@ -849,7 +968,7 @@ function renderizarResultado() {
 
   document.getElementById("resultado-score").innerHTML = `
     <div class="resultado-score-numero">${pontos}</div>
-    <div class="resultado-score-total">de ${total} acertos</div>
+    <div class="resultado-score-total">de ${total * 10} pontos possíveis</div>
     <div class="resultado-score-pts">${pct}% de aproveitamento</div>
   `;
 
