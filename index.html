@@ -1168,9 +1168,10 @@ function abrirAdmin() {
       <div class="admin-stat"><div class="admin-stat-num">${mediaPct}%</div><div class="admin-stat-lbl">média de acerto</div></div>
     `;
 
+    const medalhas = ["🥇","🥈","🥉"];
     tbody.innerHTML = lista.map((d, i) => `
       <tr>
-        <td>${i+1}</td>
+        <td style="font-weight:700; white-space:nowrap;">${i < 3 ? medalhas[i] : "#"+(i+1)}</td>
         <td>${(d.nome||"").replace(/</g,"&lt;")}</td>
         <td>${(d.municipio||"").replace(/</g,"&lt;")}</td>
         <td>${d.pontos}/${d.total}</td>
